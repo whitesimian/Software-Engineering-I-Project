@@ -14,6 +14,8 @@ private:
 	int time;
 	bool print;
 
+	static Model* instance; // Singleton
+
 	ModelImpl(int, bool);
 	~ModelImpl();
 	
@@ -26,7 +28,7 @@ public:
 	vector<Flow * >::iterator flowBegin();
 	vector<Flow * >::iterator flowEnd();
 
-	bool add_system(string, int);
+	System* add_system(string, int);
 
 	template<typename __FLOW_FUNCT_OBJ>
 	static Flow* add_flow(System *, System *, const string&);

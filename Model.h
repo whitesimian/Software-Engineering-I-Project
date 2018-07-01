@@ -10,7 +10,7 @@ using namespace std;
 class Flow;
 class System;
 
-class Model {
+class Model{
 
 public:
 	static Model* new_model(int, bool);
@@ -20,7 +20,7 @@ public:
 	virtual vector<Flow *>::iterator flowBegin() = 0;
 	virtual vector<Flow *>::iterator flowEnd() = 0;
 
-	virtual bool add_system(string, int) = 0;
+	virtual System* add_system(string, int) = 0;
 
 	template<typename __FLOW_FUNCT_OBJ>
 	static Flow* add_flow(System *, System *, const string&);

@@ -5,6 +5,8 @@
 #include <vector>
 #include <stdexcept>
 
+Model* ModelImpl::instance = nullptr; // Singleton
+
 ModelImpl::ModelImpl(int initial_time = 0, bool flag = false) : time(initial_time), print(flag)
 {
 }
@@ -21,8 +23,9 @@ ModelImpl::~ModelImpl()
 
 Model * ModelImpl::new_model(int time = 0, bool print = false)
 {
-	Model* novo = new ModelImpl(time, print);
-	return novo;
+	if (instance == nullptr)
+		instance = new ModelImpl(time, print);
+	return instance;
 }
 
 vector<System*>::iterator ModelImpl::systemBegin()
@@ -50,16 +53,18 @@ vector<Flow*>::iterator ModelImpl::flowEnd()
 	return flowSet.end();
 }
 
-bool ModelImpl::add_system(string name, int stock)
+System* ModelImpl::add_system(string name, int stock)
 {
 	System *to_add = System::new_system(name, stock);
 	try {
 		systemSet.push_back(to_add);
 	}
 	catch (...) {
-		return false;
+		if (to_add != nullptr)
+			delete to_add;
+		return nullptr;
 	}
-	return true;
+	return to_add;
 }
 
 template<typename __FLOW_FUNCT_OBJ>

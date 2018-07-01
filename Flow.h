@@ -16,5 +16,9 @@ public:
 	virtual std::string get_name() = 0;
 	virtual System* get_source() = 0;
 	virtual System* get_target() = 0;
+	virtual bool set_name(const std::string&) = 0;
+	virtual bool set_source_system(System *) = 0;
+	virtual bool set_target_system(System *) = 0;
+
 	virtual double flow_funct() = 0;
 };
