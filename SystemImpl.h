@@ -9,6 +9,7 @@ class SystemImpl : public System{
 private:
 	string name;
 	double stock;
+	double last_stock;
 
 public:
 	SystemImpl(string, double);
@@ -17,5 +18,7 @@ public:
 	void set_name(const string&);
 	void set_stock(double);
 	double get_stock();
+	double get_last_stock();
+	bool set_last_stock(double);
 
 };

@@ -10,21 +10,21 @@ using namespace std;
 class Exp : public FlowImpl {
 public:
 	double flow_funct() {
-		return get_source()->get_stock() * 0.01;
+		return get_source()->get_last_stock() * 0.01;
 	}
 };
 
 class Logistic : public FlowImpl {
 public:
 	double flow_funct() {
-		return 0.01 * get_target()->get_stock() * (1 - get_source()->get_stock() / 70);
+		return 0.01 * get_target()->get_last_stock() * (1 - get_target()->get_last_stock() / 70);
 	}
 };
 
 int main() {
 
 	// TESTES UNITÁRIOS
-
+		
 	// ======== SYSTEM
 	{
 		System* sistema = System::new_system("test1", 1000);
@@ -36,6 +36,10 @@ int main() {
 
 		sistema->set_stock(1010);
 		assert(sistema->get_stock() == 1010);
+		assert(sistema->get_last_stock() == 1000);
+
+		sistema->set_last_stock(30);
+		assert(sistema->get_last_stock() == 30);
 	}
 
 	// ======== FLOW
@@ -94,7 +98,13 @@ int main() {
 		System* sistema1 = System::new_system("source", 1000);
 		System* sistema2 = System::new_system("target", 0);
 
-		assert(Model::add_flow<Logistic>(sistema1, sistema2, "fluxo teste") != nullptr);
+		assert(Model::add_flow<Logistic>(sistema1, sistema2, "fluxo teste") != nullptr); // "source" e "target" adicionados ao modelo
+
+		assert(Model::get_instance()->system_exists("source") != nullptr);
+		assert(Model::get_instance()->system_exists("target") != nullptr);
+		assert(Model::get_instance()->flow_exists("fluxo teste") != nullptr);
+
+		assert(Model::add_flow<Exp>("source", "target", "novo_fluxo") != nullptr);
 
 		assert(modelo->system_vector() != nullptr);
 		assert(modelo->flow_vector() != nullptr);
@@ -102,6 +112,67 @@ int main() {
 		modelo->clear();
 		assert(modelo->get_cur_time() == 0);
 		assert(!modelo->get_print_status());
+	}
+
+	// TESTES FUNCIONAIS
+	{
+		Model::new_model();
+
+		// TESTE 1
+		{
+			Model::get_instance()->set_time(0);
+			Model::add_system("pop1", 100.0);
+			Model::add_system("pop2", 0.0);
+			Model::add_flow<Exp>("pop1", "pop2", "exponencial");
+			Model::get_instance()->run(100);
+
+			//cout << Model::get_instance()->system_exists("pop1")->get_stock() << "\n";
+			//cout << Model::get_instance()->system_exists("pop2")->get_stock() << "\n";
+
+			assert(Model::get_instance()->system_exists("pop1")->get_stock() - 36.6032 < 1e-04);
+			assert(Model::get_instance()->system_exists("pop2")->get_stock() - 63.3968 < 1e-04);
+		}
+		
+		// TESTE 2
+		{
+			Model::get_instance()->set_time(0);
+			Model::add_system("p1", 100.0);
+			Model::add_system("p2", 10.0);
+			Model::add_flow<Logistic>("p1", "p2", "logistica");
+			Model::get_instance()->run(100);
+
+			assert(Model::get_instance()->system_exists("p1")->get_stock() - 88.2167 < 1e-04);
+			assert(Model::get_instance()->system_exists("p2")->get_stock() - 21.7834 < 1e-04);
+		}
+
+		//TESTE 3
+		{
+			Model::get_instance()->set_time(0);
+			Model::add_system("S1", 100.0);
+			Model::add_system("S2", 100.0);
+			Model::add_system("S3", 100.0);
+			Model::add_system("S4", 100.0);
+			Model::add_system("S5", 100.0);
+			Model::add_flow<Exp>("S1", "S2", "exponencial1");
+			Model::add_flow<Exp>("S1", "S3", "exponencial2");
+			Model::add_flow<Exp>("S2", "S3", "exponencial3");
+			Model::add_flow<Exp>("S2", "S5", "exponencial4");
+			Model::add_flow<Exp>("S3", "S4", "exponencial5");
+			Model::add_flow<Exp>("S4", "S1", "exponencial6");
+			Model::get_instance()->run(100);
+
+			/*cout << Model::get_instance()->system_exists("S1")->get_stock() << "\n";
+			cout << Model::get_instance()->system_exists("S2")->get_stock() << "\n";
+			cout << Model::get_instance()->system_exists("S3")->get_stock() << "\n";
+			cout << Model::get_instance()->system_exists("S4")->get_stock() << "\n";
+			cout << Model::get_instance()->system_exists("S5")->get_stock() << "\n";*/
+
+			/*assert(Model::get_instance()->system_exists("S1")->get_stock() - 31.8513 < 1e-04);
+			assert(Model::get_instance()->system_exists("S2")->get_stock() - 18.4003 < 1e-04);
+			assert(Model::get_instance()->system_exists("S3")->get_stock() - 77.1143 < 1e-04);
+			assert(Model::get_instance()->system_exists("S4")->get_stock() - 56.1728 < 1e-04);
+			assert(Model::get_instance()->system_exists("S5")->get_stock() - 16.4612 < 1e-04);*/
+		}
 	}
 
 	// ==========================================

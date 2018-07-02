@@ -130,6 +130,12 @@ bool ModelImpl::get_print_status()
 	return print;
 }
 
+bool ModelImpl::set_time(int time)
+{
+	this->time = time;
+	return true;
+}
+
 int ModelImpl::get_cur_time()
 {
 	return time;
@@ -151,15 +157,33 @@ bool ModelImpl::clear()
 	return true;
 }
 
+System* ModelImpl::system_exists(const string& name)
+{
+	for (System* elem : *Model::get_instance()->system_vector()) {
+		if (elem->get_name() == name)
+			return elem;
+	}
+	return nullptr;
+}
+
+Flow* ModelImpl::flow_exists(const string & name)
+{
+	for (Flow* elem : *Model::get_instance()->flow_vector()) {
+		if (elem->get_name() == name)
+			return elem;
+	}
+	return nullptr;
+}
+
 bool ModelImpl::run(int end_time)
 {
-	if (print) {
+	/*if (this->print) {
 		cout << setw(15) << time;
 		for (System* sys : systemSet) {
 			cout << setw(15) << sys->get_name();
 		}
 		cout << "\n";
-	}
+	}*/
 
 	while (time < end_time) {
 		for (Flow* flux : flowSet) {
@@ -168,13 +192,17 @@ bool ModelImpl::run(int end_time)
 			flux->get_target()->set_stock(flux->get_target()->get_stock() + package);
 		}
 
-		if (print) {
+		for (System* sistema : systemSet) {
+			sistema->set_last_stock(sistema->get_stock());
+		}
+
+		/*if (this->print) {
 			cout << time << "\t";
 			for (System* sys : systemSet) {
 				cout << sys->get_stock() << "\t";
 			}
 			cout << "\n";
-		}
+		}*/
 		++time;
 	}
 

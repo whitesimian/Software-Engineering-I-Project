@@ -1,2 +1,11 @@
 ﻿  main.cpp
+d:\visual studio 2017\projects\engdesoftwarei\engdesoftwarei\main.cpp(124): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\visual studio 2017\projects\engdesoftwarei\engdesoftwarei\main.cpp(125): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\visual studio 2017\projects\engdesoftwarei\engdesoftwarei\main.cpp(139): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\visual studio 2017\projects\engdesoftwarei\engdesoftwarei\main.cpp(140): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\visual studio 2017\projects\engdesoftwarei\engdesoftwarei\main.cpp(151): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\visual studio 2017\projects\engdesoftwarei\engdesoftwarei\main.cpp(152): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\visual studio 2017\projects\engdesoftwarei\engdesoftwarei\main.cpp(153): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\visual studio 2017\projects\engdesoftwarei\engdesoftwarei\main.cpp(154): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\visual studio 2017\projects\engdesoftwarei\engdesoftwarei\main.cpp(155): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
   EngDeSoftwareI.vcxproj -> D:\Visual Studio 2017\Projects\EngDeSoftwareI\Debug\EngDeSoftwareI.exe
