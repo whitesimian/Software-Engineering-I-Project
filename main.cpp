@@ -126,8 +126,8 @@ int main() {
 			Model::add_flow<Exp>("pop1", "pop2", "exponencial");
 			Model::get_instance()->run(100);
 
-			//cout << Model::get_instance()->system_exists("pop1")->get_stock() << "\n";
-			//cout << Model::get_instance()->system_exists("pop2")->get_stock() << "\n";
+			/*cout << Model::get_instance()->system_exists("pop1")->get_stock() << "\n";
+			cout << Model::get_instance()->system_exists("pop2")->get_stock() << "\n";*/
 
 			assert(Model::get_instance()->system_exists("pop1")->get_stock() - 36.6032 < 1e-04);
 			assert(Model::get_instance()->system_exists("pop2")->get_stock() - 63.3968 < 1e-04);
@@ -149,10 +149,10 @@ int main() {
 		{
 			Model::get_instance()->set_time(0);
 			Model::add_system("S1", 100.0);
-			Model::add_system("S2", 100.0);
+			Model::add_system("S2", 0.0);
 			Model::add_system("S3", 100.0);
-			Model::add_system("S4", 100.0);
-			Model::add_system("S5", 100.0);
+			Model::add_system("S4", 0.0);
+			Model::add_system("S5", 0.0);
 			Model::add_flow<Exp>("S1", "S2", "exponencial1");
 			Model::add_flow<Exp>("S1", "S3", "exponencial2");
 			Model::add_flow<Exp>("S2", "S3", "exponencial3");
@@ -167,11 +167,11 @@ int main() {
 			cout << Model::get_instance()->system_exists("S4")->get_stock() << "\n";
 			cout << Model::get_instance()->system_exists("S5")->get_stock() << "\n";*/
 
-			/*assert(Model::get_instance()->system_exists("S1")->get_stock() - 31.8513 < 1e-04);
+			assert(Model::get_instance()->system_exists("S1")->get_stock() - 31.8513 < 1e-04);
 			assert(Model::get_instance()->system_exists("S2")->get_stock() - 18.4003 < 1e-04);
 			assert(Model::get_instance()->system_exists("S3")->get_stock() - 77.1143 < 1e-04);
 			assert(Model::get_instance()->system_exists("S4")->get_stock() - 56.1728 < 1e-04);
-			assert(Model::get_instance()->system_exists("S5")->get_stock() - 16.4612 < 1e-04);*/
+			assert(Model::get_instance()->system_exists("S5")->get_stock() - 16.4612 < 1e-04);
 		}
 	}
 
