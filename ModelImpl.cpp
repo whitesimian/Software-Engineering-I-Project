@@ -21,6 +21,16 @@ ModelImpl::~ModelImpl()
 			delete elem;
 }
 
+vector<System*>* ModelImpl::system_vector()
+{
+	return &systemSet;
+}
+
+vector<Flow*>* ModelImpl::flow_vector()
+{
+	return &flowSet;
+}
+
 Model * ModelImpl::new_model(int time = 0, bool print = false)
 {
 	if (instance == nullptr)
@@ -38,11 +48,6 @@ vector<System*>::iterator ModelImpl::systemEnd()
 	return systemSet.end();
 }
 
-/*System* ModelImpl::systemAt(unsigned pos)
-{
-	return systemSet.at(pos);
-}*/
-
 vector<Flow*>::iterator ModelImpl::flowBegin()
 {
 	return flowSet.begin();
@@ -53,11 +58,11 @@ vector<Flow*>::iterator ModelImpl::flowEnd()
 	return flowSet.end();
 }
 
-System* ModelImpl::add_system(string name, int stock)
+System* ModelImpl::add_system(const string& name, int stock)
 {
 	System *to_add = System::new_system(name, stock);
 	try {
-		systemSet.push_back(to_add);
+		Model::get_instance()->system_vector()->push_back(to_add);
 	}
 	catch (...) {
 		if (to_add != nullptr)
@@ -67,12 +72,12 @@ System* ModelImpl::add_system(string name, int stock)
 	return to_add;
 }
 
-template<typename __FLOW_FUNCT_OBJ>
-Flow* ModelImpl::add_flow(System *f1, System *f2, const string& name)
+/*template<typename __FLOW_FUNCT_OBJ>
+Flow* ModelImpl::add_flow(System *f1, System *f2, const std::string& name)
 {
 	Flow *to_add = Flow::new_flow<__FLOW_FUNCT_OBJ>(f1, f2, name);
 	try {
-		flowSet.push_back(to_add);
+		Model::get_instance()->flow_vector().push_back(to_add);
 	}
 	catch (...) {
 		if(to_add != nullptr)
@@ -80,6 +85,11 @@ Flow* ModelImpl::add_flow(System *f1, System *f2, const string& name)
 		return nullptr;
 	}
 	return to_add;
+}*/
+
+Model * ModelImpl::get_instance()
+{
+	return ModelImpl::instance;
 }
 
 bool ModelImpl::erase_system(const string& name)
@@ -110,9 +120,14 @@ bool ModelImpl::erase_flow(const string& name)
 	return false;
 }
 
-void ModelImpl::print_status(bool flag)
+void ModelImpl::set_print_status(bool flag)
 {
 	print = flag;
+}
+
+bool ModelImpl::get_print_status()
+{
+	return print;
 }
 
 int ModelImpl::get_cur_time()
@@ -165,8 +180,3 @@ bool ModelImpl::run(int end_time)
 
 	return true;
 }
-
-/*Flow * ModelImpl::flowAt(unsigned pos)
-{
-	return flowSet.at(pos);
-}*/

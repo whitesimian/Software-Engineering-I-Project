@@ -20,15 +20,20 @@ public:
 	virtual vector<Flow *>::iterator flowBegin() = 0;
 	virtual vector<Flow *>::iterator flowEnd() = 0;
 
-	virtual System* add_system(string, int) = 0;
+	static System* add_system(const std::string&, int);
 
 	template<typename __FLOW_FUNCT_OBJ>
 	static Flow* add_flow(System *, System *, const string&);
 
+	static Model* get_instance();
 	virtual bool erase_system(const string&) = 0;
 	virtual bool erase_flow(const string&) = 0;
-	virtual void print_status(bool) = 0;
+	virtual void set_print_status(bool) = 0;
+	virtual bool get_print_status() = 0;
 	virtual int get_cur_time() = 0;
 	virtual bool clear() = 0;
 	virtual bool run(int) = 0;
+
+	virtual std::vector<System *> * system_vector() = 0; // Para se poder usar add_system e add_flow
+	virtual std::vector<Flow *> * flow_vector() = 0;
 };

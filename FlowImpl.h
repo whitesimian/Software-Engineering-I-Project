@@ -30,9 +30,9 @@ template<typename __FLOW_FUNCT_OBJ>
 inline Flow* FlowImpl::new_flow(System * from, System * to, const string & n)
 {
 	Flow* novo = new __FLOW_FUNCT_OBJ;
-	novo->set_name(n);
 	novo->set_source_system(from);
 	novo->set_target_system(to);
+	novo->set_name(n);
 	return novo;
 }
 
