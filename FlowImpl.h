@@ -12,6 +12,7 @@ public:
 	FlowImpl(System *, System *, const string&);
 	FlowImpl();
 	virtual ~FlowImpl();
+
 	string get_name();
 	System* get_source();
 	System* get_target();
@@ -21,6 +22,10 @@ public:
 
 	template<typename __FLOW_FUNCT_OBJ>
 	static Flow* new_flow(System *, System *, const string&);
+
+	Flow& operator=(Flow *);
+	bool operator==(Flow *);
+	bool operator!=(Flow *);
 
 	virtual double flow_funct() = 0;
 

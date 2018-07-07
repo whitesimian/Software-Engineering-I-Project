@@ -6,30 +6,30 @@
 
 using namespace std;
 
-class ModelImpl : public Model{
+class ModelImpl : public Model {
 
 private:
 	vector<Flow *> flowSet;
 	vector<System *> systemSet;
 	int time;
-	bool print;
 
 	static Model* instance; // Singleton
 
-	ModelImpl(int, bool);
+	ModelImpl(int);
 	~ModelImpl();
-	
+
 public:
 
-	static Model* new_model(int, bool);
+	static Model* new_model(int);
 
 	vector<System * >::iterator systemBegin();
 	vector<System * >::iterator systemEnd();
+	bool system_resize_one_more();
+	size_t system_amount();
 	vector<Flow * >::iterator flowBegin();
 	vector<Flow * >::iterator flowEnd();
-
-	vector<System *> * system_vector();
-	vector<Flow *> * flow_vector();
+	bool flow_resize_one_more();
+	size_t flow_amount();
 
 	static System* add_system(const string&, int);
 
@@ -42,13 +42,13 @@ public:
 	static Model* get_instance();
 	bool erase_system(const string&);
 	bool erase_flow(const string&);
-	void set_print_status(bool);
-	bool get_print_status();
 	bool set_time(int);
 	int get_cur_time();
 	bool clear();
 	System* system_exists(const string&);
 	Flow* flow_exists(const string&);
+
+	void * operator new(size_t);
 
 	bool run(int);
 
@@ -59,13 +59,19 @@ inline Flow* ModelImpl::add_flow(System* s1, System* s2, const std::string& name
 {
 	Flow *to_add = Flow::new_flow<__FLOW_FUNCT_OBJ>(s1, s2, name);
 	try {
-		Model::get_instance()->flow_vector()->push_back(to_add);
+		Model* ins = Model::get_instance();
+		ins->flow_resize_one_more();
+		*(--ins->flowEnd()) = to_add;
 
-		if (Model::get_instance()->system_exists(s1->get_name()) == nullptr) // Se o sistema não existe, adicione-o
-			Model::get_instance()->system_vector()->push_back(s1);
+		if (Model::get_instance()->system_exists(s1->get_name()) == nullptr) { // Se o sistema não existe, adicione-o
+			ins->system_resize_one_more();
+			*(--ins->systemEnd()) = s1;
+		}
 
-		if (Model::get_instance()->system_exists(s2->get_name()) == nullptr)
-			Model::get_instance()->system_vector()->push_back(s2);
+		if (Model::get_instance()->system_exists(s2->get_name()) == nullptr) {
+			ins->system_resize_one_more();
+			*(--ins->systemEnd()) = s2;
+		}
 	}
 	catch (...) {
 		if (to_add != nullptr)
@@ -86,11 +92,13 @@ inline Flow * ModelImpl::add_flow(const string & s1, const string & s2, const st
 
 	if (system_one == nullptr || system_two == nullptr)
 		return nullptr;
-	
+
 	Flow *to_add = Flow::new_flow<__FLOW_FUNCT_OBJ>(system_one, system_two, name); // Cria o fluxo
 
 	try {
-		Model::get_instance()->flow_vector()->push_back(to_add);
+		Model* ins = Model::get_instance();
+		ins->flow_resize_one_more();
+		*(--ins->flowEnd()) = to_add;
 	}
 	catch (...) {
 		if (to_add != nullptr)

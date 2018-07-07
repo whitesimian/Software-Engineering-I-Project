@@ -56,5 +56,8 @@
     <ClInclude Include="_model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HandleBody.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

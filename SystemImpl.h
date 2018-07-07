@@ -20,5 +20,8 @@ public:
 	double get_stock();
 	double get_last_stock();
 	bool set_last_stock(double);
-
+	
+	System& operator=(System *);
+	bool operator==(System *);
+	bool operator!=(System *);
 };

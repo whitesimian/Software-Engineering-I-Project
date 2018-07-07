@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClInclude Include="Flow.h" />
     <ClInclude Include="FlowImpl.h" />
+    <ClInclude Include="HandleBody.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelImpl.h" />
     <ClInclude Include="System.h" />

@@ -24,9 +24,10 @@ public:
 int main() {
 
 	// TESTES UNITÁRIOS
-		
+	cout << "Iniciando testes unitarios...\n";
 	// ======== SYSTEM
 	{
+		cout << "Iniciando testes para System...\n";
 		System* sistema = System::new_system("test1", 1000);
 		assert(sistema->get_name() == "test1");
 		assert(sistema->get_stock() == 1000);
@@ -40,11 +41,13 @@ int main() {
 
 		sistema->set_last_stock(30);
 		assert(sistema->get_last_stock() == 30);
+		cout << "Concluido.\n";
 	}
 
 	// ======== FLOW
 
 	{
+		cout << "Iniciando testes para Flow...\n";
 		System* sistema1 = System::new_system("source", 1000);
 		System* sistema2 = System::new_system("target", 0);
 
@@ -70,20 +73,18 @@ int main() {
 
 		double logistic_stock_test = fluxo2->flow_funct();
 		assert(logistic_stock_test == 0.01 * fluxo2->get_target()->get_stock() * (1 - fluxo2->get_source()->get_stock() / 70));
-
+		cout << "Concluido.\n";
 	}
 
 	// MODEL E SINGLETON
 	{
-		Model* modelo = Model::new_model(5, false);
-		Model* modelo_teste_singleton = Model::new_model(2, true);
+		cout << "Iniciando testes para Model...\n";
+		Model* modelo = Model::new_model(5);
+		Model* modelo_teste_singleton = Model::new_model(2);
 
 		assert(modelo == modelo_teste_singleton); // Testa singleton -> mesmo objeto
 
 		assert(modelo->get_cur_time() == 5);
-
-		modelo->set_print_status(true);
-		assert(modelo->get_print_status());
 
 		assert(modelo->systemBegin() == modelo->systemEnd()); // Vazio
 		assert(modelo->flowBegin() == modelo->flowEnd()); // Vazio
@@ -106,20 +107,24 @@ int main() {
 
 		assert(Model::add_flow<Exp>("source", "target", "novo_fluxo") != nullptr);
 
-		assert(modelo->system_vector() != nullptr);
-		assert(modelo->flow_vector() != nullptr);
+		assert(Model::get_instance()->system_amount() == 2);
+		assert(Model::get_instance()->flow_amount() == 2);
+	
+		assert(Model::get_instance()->system_resize_one_more());
+		assert(Model::get_instance()->flow_resize_one_more());
 
 		modelo->clear();
 		assert(modelo->get_cur_time() == 0);
-		assert(!modelo->get_print_status());
+		cout << "Concluido.\n";
 	}
 
 	// TESTES FUNCIONAIS
 	{
 		Model::new_model();
-
+		cout << "\nIniciando testes funcionais...\n";
 		// TESTE 1
 		{
+			cout << "Iniciando teste funcional 1...\n";
 			Model::get_instance()->set_time(0);
 			Model::add_system("pop1", 100.0);
 			Model::add_system("pop2", 0.0);
@@ -131,10 +136,12 @@ int main() {
 
 			assert(Model::get_instance()->system_exists("pop1")->get_stock() - 36.6032 < 1e-04);
 			assert(Model::get_instance()->system_exists("pop2")->get_stock() - 63.3968 < 1e-04);
+			cout << "Concluido.\n";
 		}
 		
 		// TESTE 2
 		{
+			cout << "Iniciando teste funcional 2...\n";
 			Model::get_instance()->set_time(0);
 			Model::add_system("p1", 100.0);
 			Model::add_system("p2", 10.0);
@@ -143,10 +150,12 @@ int main() {
 
 			assert(Model::get_instance()->system_exists("p1")->get_stock() - 88.2167 < 1e-04);
 			assert(Model::get_instance()->system_exists("p2")->get_stock() - 21.7834 < 1e-04);
+			cout << "Concluido.\n";
 		}
 
 		//TESTE 3
 		{
+			cout << "Iniciando teste funcional 3...\n";
 			Model::get_instance()->set_time(0);
 			Model::add_system("S1", 100.0);
 			Model::add_system("S2", 0.0);
@@ -172,6 +181,7 @@ int main() {
 			assert(Model::get_instance()->system_exists("S3")->get_stock() - 77.1143 < 1e-04);
 			assert(Model::get_instance()->system_exists("S4")->get_stock() - 56.1728 < 1e-04);
 			assert(Model::get_instance()->system_exists("S5")->get_stock() - 16.4612 < 1e-04);
+			cout << "Concluido.\n";
 		}
 	}
 

@@ -54,3 +54,23 @@ bool FlowImpl::set_target_system(System * target)
 	this->to = target;
 	return true;
 }
+
+Flow & FlowImpl::operator=(Flow * obj)
+{
+	if (this == obj)
+		return *this;
+	this->name = obj->get_name();
+	this->from = obj->get_source();
+	this->to = obj->get_target();
+	return *this;
+}
+
+bool FlowImpl::operator==(Flow * obj)
+{
+	return (this->name == obj->get_name() && this->from == obj->get_source() && this->to == obj->get_target());
+}
+
+bool FlowImpl::operator!=(Flow * obj)
+{
+	return (this->name != obj->get_name() || this->from != obj->get_source() || this->to != obj->get_target());
+}

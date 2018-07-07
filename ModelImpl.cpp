@@ -7,7 +7,7 @@
 
 Model* ModelImpl::instance = nullptr; // Singleton
 
-ModelImpl::ModelImpl(int initial_time = 0, bool flag = false) : time(initial_time), print(flag)
+ModelImpl::ModelImpl(int initial_time = 0) : time(initial_time)
 {
 }
 
@@ -21,20 +21,19 @@ ModelImpl::~ModelImpl()
 			delete elem;
 }
 
-vector<System*>* ModelImpl::system_vector()
+void * ModelImpl::operator new(size_t tam)
 {
-	return &systemSet;
+	if (instance == nullptr) {
+		tam = sizeof(ModelImpl);
+		return (instance = (ModelImpl*)malloc(tam));
+	}
+	return instance;
 }
 
-vector<Flow*>* ModelImpl::flow_vector()
-{
-	return &flowSet;
-}
-
-Model * ModelImpl::new_model(int time = 0, bool print = false)
+Model * ModelImpl::new_model(int time = 0)
 {
 	if (instance == nullptr)
-		instance = new ModelImpl(time, print);
+		instance = new ModelImpl(time);
 	return instance;
 }
 
@@ -48,6 +47,22 @@ vector<System*>::iterator ModelImpl::systemEnd()
 	return systemSet.end();
 }
 
+bool ModelImpl::system_resize_one_more()
+{
+	try {
+		this->systemSet.resize(systemSet.size() + 1);
+	}
+	catch (...) {
+		return false;
+	}
+	return true;
+}
+
+size_t ModelImpl::system_amount()
+{
+	return this->systemSet.size();
+}
+
 vector<Flow*>::iterator ModelImpl::flowBegin()
 {
 	return flowSet.begin();
@@ -58,11 +73,29 @@ vector<Flow*>::iterator ModelImpl::flowEnd()
 	return flowSet.end();
 }
 
+bool ModelImpl::flow_resize_one_more()
+{
+	try {
+		this->flowSet.resize(flowSet.size() + 1);
+	}
+	catch (...) {
+		return false;
+	}
+	return true;
+}
+
+size_t ModelImpl::flow_amount()
+{
+	return this->flowSet.size();
+}
+
 System* ModelImpl::add_system(const string& name, int stock)
 {
 	System *to_add = System::new_system(name, stock);
 	try {
-		Model::get_instance()->system_vector()->push_back(to_add);
+		Model* ins = Model::get_instance();
+		ins->system_resize_one_more();
+		*(--ins->systemEnd()) = to_add;
 	}
 	catch (...) {
 		if (to_add != nullptr)
@@ -71,21 +104,6 @@ System* ModelImpl::add_system(const string& name, int stock)
 	}
 	return to_add;
 }
-
-/*template<typename __FLOW_FUNCT_OBJ>
-Flow* ModelImpl::add_flow(System *f1, System *f2, const std::string& name)
-{
-	Flow *to_add = Flow::new_flow<__FLOW_FUNCT_OBJ>(f1, f2, name);
-	try {
-		Model::get_instance()->flow_vector().push_back(to_add);
-	}
-	catch (...) {
-		if(to_add != nullptr)
-			delete to_add;
-		return nullptr;
-	}
-	return to_add;
-}*/
 
 Model * ModelImpl::get_instance()
 {
@@ -120,16 +138,6 @@ bool ModelImpl::erase_flow(const string& name)
 	return false;
 }
 
-void ModelImpl::set_print_status(bool flag)
-{
-	print = flag;
-}
-
-bool ModelImpl::get_print_status()
-{
-	return print;
-}
-
 bool ModelImpl::set_time(int time)
 {
 	this->time = time;
@@ -152,39 +160,34 @@ bool ModelImpl::clear()
 	systemSet.clear();
 	flowSet.clear();
 	time = 0;
-	print = false;
 
 	return true;
 }
 
 System* ModelImpl::system_exists(const string& name)
 {
-	for (System* elem : *Model::get_instance()->system_vector()) {
-		if (elem->get_name() == name)
-			return elem;
+	vector<System *>::iterator it = Model::get_instance()->systemBegin();
+	while (it != Model::get_instance()->systemEnd()) {
+		if ((*it)->get_name() == name)
+			return (*it);
+		advance(it, 1);
 	}
 	return nullptr;
 }
 
 Flow* ModelImpl::flow_exists(const string & name)
 {
-	for (Flow* elem : *Model::get_instance()->flow_vector()) {
-		if (elem->get_name() == name)
-			return elem;
+	vector<Flow *>::iterator it = Model::get_instance()->flowBegin();
+	while (it != Model::get_instance()->flowEnd()) {
+		if ((*it)->get_name() == name)
+			return (*it);
+		advance(it, 1);
 	}
 	return nullptr;
 }
 
 bool ModelImpl::run(int end_time)
 {
-	/*if (this->print) {
-		cout << setw(15) << time;
-		for (System* sys : systemSet) {
-			cout << setw(15) << sys->get_name();
-		}
-		cout << "\n";
-	}*/
-
 	while (time < end_time) {
 		for (Flow* flux : flowSet) {
 			double package = flux->flow_funct();
@@ -195,14 +198,6 @@ bool ModelImpl::run(int end_time)
 		for (System* sistema : systemSet) {
 			sistema->set_last_stock(sistema->get_stock());
 		}
-
-		/*if (this->print) {
-			cout << time << "\t";
-			for (System* sys : systemSet) {
-				cout << sys->get_stock() << "\t";
-			}
-			cout << "\n";
-		}*/
 		++time;
 	}
 
