@@ -119,7 +119,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelImpl.cpp" />
-    <ClCompile Include="System.cpp" />
     <ClCompile Include="SystemImpl.cpp" />
   </ItemGroup>
   <ItemGroup>

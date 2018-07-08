@@ -1,0 +1,2 @@
+﻿main.obj : error LNK2001: unresolved external symbol "public: __thiscall FlowHandle<class Exp>::FlowHandle<class Exp>(class System *,class System *,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (??0?$FlowHandle@VExp@@@@QAE@PAVSystem@@0ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+D:\Visual Studio 2017\Projects\EngDeSoftwareI\Release\EngDeSoftwareI.exe : fatal error LNK1120: 1 unresolved externals

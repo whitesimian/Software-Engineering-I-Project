@@ -91,7 +91,7 @@ size_t ModelImpl::flow_amount()
 
 System* ModelImpl::add_system(const string& name, int stock)
 {
-	System *to_add = System::new_system(name, stock);
+	System *to_add = new SystemHandle(name, stock);
 	try {
 		Model* ins = Model::get_instance();
 		ins->system_resize_one_more();

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Flow.h"
-#include "System.h"
+#include "FlowImpl.h"
+#include "SystemImpl.h"
 #include <cstring>
 #include <vector>
 

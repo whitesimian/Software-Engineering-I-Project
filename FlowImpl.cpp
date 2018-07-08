@@ -1,13 +1,13 @@
 #include "FlowImpl.h"
 #include <string>
 
-FlowImpl::FlowImpl(System *source = nullptr, System *target = nullptr, const string & n = "") : from(source), to(target), name(n)
+FlowImpl::FlowImpl(System *source, System *target, const string & n) : from(source), to(target), name(n)
 {
 }
 
 FlowImpl::FlowImpl()
 {
-	name = "";
+	name = "Dummy";
 	from = nullptr;
 	to = nullptr;
 }
@@ -55,7 +55,7 @@ bool FlowImpl::set_target_system(System * target)
 	return true;
 }
 
-Flow & FlowImpl::operator=(Flow * obj)
+FlowImpl & FlowImpl::operator=(FlowImpl * obj)
 {
 	if (this == obj)
 		return *this;
@@ -65,12 +65,14 @@ Flow & FlowImpl::operator=(Flow * obj)
 	return *this;
 }
 
-bool FlowImpl::operator==(Flow * obj)
+bool FlowImpl::operator==(FlowImpl * obj)
 {
 	return (this->name == obj->get_name() && this->from == obj->get_source() && this->to == obj->get_target());
 }
 
-bool FlowImpl::operator!=(Flow * obj)
+bool FlowImpl::operator!=(FlowImpl * obj)
 {
 	return (this->name != obj->get_name() || this->from != obj->get_source() || this->to != obj->get_target());
 }
+
+// ===================================================================================

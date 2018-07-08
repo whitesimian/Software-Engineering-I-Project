@@ -1,4 +1,4 @@
-﻿  Model.cpp
+﻿  FlowImpl.cpp
   Generating Code...
   Compiling...
   main.cpp
@@ -11,10 +11,8 @@ d:\visual studio 2017\projects\engdesoftwarei\engdesoftwarei\main.cpp(161): warn
 d:\visual studio 2017\projects\engdesoftwarei\engdesoftwarei\main.cpp(162): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
 d:\visual studio 2017\projects\engdesoftwarei\engdesoftwarei\main.cpp(163): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
 d:\visual studio 2017\projects\engdesoftwarei\engdesoftwarei\main.cpp(164): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-  ModelImpl.cpp
-  Generating Code...
-  Skipping... (no relevant changes detected)
   SystemImpl.cpp
-  System.cpp
-  FlowImpl.cpp
+  ModelImpl.cpp
+  Model.cpp
+  Generating Code...
   EngDeSoftwareI.vcxproj -> D:\Visual Studio 2017\Projects\EngDeSoftwareI\Debug\EngDeSoftwareI.exe

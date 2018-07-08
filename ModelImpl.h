@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "Model.h"
+#include "HandleBody.h"
 #include <stdexcept>
 
 using namespace std;
@@ -57,7 +58,7 @@ public:
 template<typename __FLOW_FUNCT_OBJ>
 inline Flow* ModelImpl::add_flow(System* s1, System* s2, const std::string& name)
 {
-	Flow *to_add = Flow::new_flow<__FLOW_FUNCT_OBJ>(s1, s2, name);
+	Flow *to_add = new FlowHandle<__FLOW_FUNCT_OBJ>(s1, s2, name);
 	try {
 		Model* ins = Model::get_instance();
 		ins->flow_resize_one_more();
@@ -93,7 +94,7 @@ inline Flow * ModelImpl::add_flow(const string & s1, const string & s2, const st
 	if (system_one == nullptr || system_two == nullptr)
 		return nullptr;
 
-	Flow *to_add = Flow::new_flow<__FLOW_FUNCT_OBJ>(system_one, system_two, name); // Cria o fluxo
+	Flow *to_add = new FlowHandle<__FLOW_FUNCT_OBJ>(system_one, system_two, name); // Cria o fluxo
 
 	try {
 		Model* ins = Model::get_instance();

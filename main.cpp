@@ -28,7 +28,7 @@ int main() {
 	// ======== SYSTEM
 	{
 		cout << "Iniciando testes para System...\n";
-		System* sistema = System::new_system("test1", 1000);
+		System* sistema = new SystemHandle("test1", 1000);
 		assert(sistema->get_name() == "test1");
 		assert(sistema->get_stock() == 1000);
 
@@ -48,10 +48,10 @@ int main() {
 
 	{
 		cout << "Iniciando testes para Flow...\n";
-		System* sistema1 = System::new_system("source", 1000);
-		System* sistema2 = System::new_system("target", 0);
+		System* sistema1 = new SystemHandle("source", 1000);
+		System* sistema2 = new SystemHandle("target", 0);
 
-		Flow* fluxo = Flow::new_flow<Exp>(sistema1, sistema2, "fluxo teste");
+		Flow* fluxo = new FlowHandle<Exp>(sistema1, sistema2, "fluxo teste");
 		assert(fluxo->get_name() == "fluxo teste");
 		assert(fluxo->get_source() == sistema1); // Mesmos objetos
 		assert(fluxo->get_target() == sistema2);
@@ -69,7 +69,7 @@ int main() {
 		assert(exp_stock_test == 0.01 * fluxo->get_source()->get_stock());
 
 
-		Flow* fluxo2 = Flow::new_flow<Logistic>(sistema1, sistema2, "fluxo teste");
+		Flow* fluxo2 = new FlowHandle<Logistic>(sistema1, sistema2, "fluxo teste");
 
 		double logistic_stock_test = fluxo2->flow_funct();
 		assert(logistic_stock_test == 0.01 * fluxo2->get_target()->get_stock() * (1 - fluxo2->get_source()->get_stock() / 70));
@@ -96,8 +96,8 @@ int main() {
 		assert(modelo->erase_system("sistema1") && modelo->systemBegin() == modelo->systemEnd());
 		assert(!modelo->erase_system("sistema nao existente"));
 
-		System* sistema1 = System::new_system("source", 1000);
-		System* sistema2 = System::new_system("target", 0);
+		System* sistema1 = new SystemHandle("source", 1000);
+		System* sistema2 = new SystemHandle("target", 0);
 
 		assert(Model::add_flow<Logistic>(sistema1, sistema2, "fluxo teste") != nullptr); // "source" e "target" adicionados ao modelo
 
@@ -131,8 +131,8 @@ int main() {
 			Model::add_flow<Exp>("pop1", "pop2", "exponencial");
 			Model::get_instance()->run(100);
 
-			/*cout << Model::get_instance()->system_exists("pop1")->get_stock() << "\n";
-			cout << Model::get_instance()->system_exists("pop2")->get_stock() << "\n";*/
+			//cout << Model::get_instance()->system_exists("pop1")->get_stock() << "\n";
+			//cout << Model::get_instance()->system_exists("pop2")->get_stock() << "\n";
 
 			assert(Model::get_instance()->system_exists("pop1")->get_stock() - 36.6032 < 1e-04);
 			assert(Model::get_instance()->system_exists("pop2")->get_stock() - 63.3968 < 1e-04);
@@ -170,11 +170,11 @@ int main() {
 			Model::add_flow<Exp>("S4", "S1", "exponencial6");
 			Model::get_instance()->run(100);
 
-			/*cout << Model::get_instance()->system_exists("S1")->get_stock() << "\n";
-			cout << Model::get_instance()->system_exists("S2")->get_stock() << "\n";
-			cout << Model::get_instance()->system_exists("S3")->get_stock() << "\n";
-			cout << Model::get_instance()->system_exists("S4")->get_stock() << "\n";
-			cout << Model::get_instance()->system_exists("S5")->get_stock() << "\n";*/
+			//cout << Model::get_instance()->system_exists("S1")->get_stock() << "\n";
+			//cout << Model::get_instance()->system_exists("S2")->get_stock() << "\n";
+			//cout << Model::get_instance()->system_exists("S3")->get_stock() << "\n";
+			//cout << Model::get_instance()->system_exists("S4")->get_stock() << "\n";
+			//cout << Model::get_instance()->system_exists("S5")->get_stock() << "\n";
 
 			assert(Model::get_instance()->system_exists("S1")->get_stock() - 31.8513 < 1e-04);
 			assert(Model::get_instance()->system_exists("S2")->get_stock() - 18.4003 < 1e-04);

@@ -1,29 +1,16 @@
-
-/*!
-\file Bridge.h
-\brief The classes Handle and Body implements "bridge" design pattern (also known as
-"handle/body idiom").The class Body was implemented based on the class teCounted
-writed by Ricardo Cartaxo and Gilberto Câmara and founded in the geographic library TerraLib.
-\author Prof. Tiago Garcia de Senna Carneiro - UFOP, MG, Brazil
-*/
-
 #pragma once
 
-/**
-* \brief
-*
-* The classes Handle and Body implements the "bridge" design pattern (also known as
-* "handle/body idiom").
-*
-*/
 template <typename T>
 class Handle
 {
 
+protected:
+	T * pImpl_;
+
 public:
 
 	Handle<T>() {
-		pImpl_ = new T;
+		pImpl_ = new T; /// ModelImpl (singleton) "new" operator is overloaded.
 		pImpl_->attach();
 	}
 
@@ -40,50 +27,32 @@ public:
 		}
 		return *this;
 	}
-protected:
-
-	T * pImpl_;
 };
-
-/**
-* \brief
-*
-* The class Implementation was implemented based on the class teCounted writed by Ricardo Cartaxo
-* and Gilberto Câmara and founded in the geographic library TerraLib.
-*/
 
 class Body
 {
+
+private:
+	Body(const Body&) = delete;
+
+	Body& operator=(const Body&) { return *this; }
+
+	int refCount_;
+
 public:
-	/// Constructor: zero references when the object is being built
+
 	Body() : refCount_(0) {  }
 
-
-	/// Increases the number of references to this object
 	void attach() { refCount_++; }
 
-	/// Decreases the number of references to this object.
-	/// Destroy it if there are no more references to it
 	void detach() {
 		if (--refCount_ == 0) {
 			delete this;
 		}
 	}
 
-	/// Returns the number of references to this object
 	int refCount() { return refCount_; }
 
-	/// Destructor
 	virtual ~Body() {}
-
-private:
-
-	/// No copy allowed
-	Body(const Body&);
-
-	/// Implementation
-	Body& operator=(const Body&) { return *this; }
-
-	int refCount_; 	/// the number of references to this class
 
 };
