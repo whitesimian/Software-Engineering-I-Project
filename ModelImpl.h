@@ -72,7 +72,7 @@ inline Flow* ModelImpl::add_flow(System* s1, System* s2, const std::string& name
 		ins->flow_resize_one_more();
 		*(--ins->flowEnd()) = to_add;
 
-		if (Model::get_instance()->system_exists(s1->get_name()) == nullptr) { // Se o sistema não existe, adicione-o
+		if (Model::get_instance()->system_exists(s1->get_name()) == nullptr) { // If the system does not exist, add it.
 			ins->system_resize_one_more();
 			*(--ins->systemEnd()) = s1;
 		}
@@ -96,13 +96,13 @@ inline Flow * ModelImpl::add_flow(const string & s1, const string & s2, const st
 	if (Model::get_instance() == nullptr) // Modelo inexistente
 		return nullptr;
 
-	System* system_one = Model::get_instance()->system_exists(s1); // nullptr se não existir
+	System* system_one = Model::get_instance()->system_exists(s1); // nullptr if it doesn't exist.
 	System* system_two = Model::get_instance()->system_exists(s2);
 
 	if (system_one == nullptr || system_two == nullptr)
 		return nullptr;
 
-	Flow *to_add = new FlowHandle<__FLOW_FUNCT_OBJ>(system_one, system_two, name); // Cria o fluxo
+	Flow *to_add = new FlowHandle<__FLOW_FUNCT_OBJ>(system_one, system_two, name); // Create the flow.
 
 	try {
 		Model* ins = Model::get_instance();
