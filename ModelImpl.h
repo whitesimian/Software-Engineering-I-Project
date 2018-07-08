@@ -1,5 +1,5 @@
 /*
-* FELIPE CÉSAR LOPES MACHADO - 16.2.5890
+* FELIPE CÃ‰SAR LOPES MACHADO - 16.2.5890
 * UFOP - UNIVERSIDADE FEDERAL DE OURO PRETO
 * JUL/2018
 */
@@ -55,8 +55,8 @@ public:
 	System* system_exists(const string&);
 	Flow* flow_exists(const string&);
 
-	void * operator new(size_t);						  /// Returns the same unique object.
-	ModelImpl(const ModelImpl&)					= delete; /// No copy allowed.
+	void * operator new(size_t);				  /// Returns the same unique object.
+	ModelImpl(const ModelImpl&)			= delete; /// No copy allowed.
 	ModelImpl& operator=(const ModelImpl&)		= delete;
 
 	bool run(int);
@@ -72,7 +72,7 @@ inline Flow* ModelImpl::add_flow(System* s1, System* s2, const std::string& name
 		ins->flow_resize_one_more();
 		*(--ins->flowEnd()) = to_add;
 
-		if (Model::get_instance()->system_exists(s1->get_name()) == nullptr) { // Se o sistema não existe, adicione-o
+		if (Model::get_instance()->system_exists(s1->get_name()) == nullptr) { // Se o sistema nÃ£o existe, adicione-o
 			ins->system_resize_one_more();
 			*(--ins->systemEnd()) = s1;
 		}
@@ -96,7 +96,7 @@ inline Flow * ModelImpl::add_flow(const string & s1, const string & s2, const st
 	if (Model::get_instance() == nullptr) // Modelo inexistente
 		return nullptr;
 
-	System* system_one = Model::get_instance()->system_exists(s1); // nullptr se não existir
+	System* system_one = Model::get_instance()->system_exists(s1); // nullptr se nÃ£o existir
 	System* system_two = Model::get_instance()->system_exists(s2);
 
 	if (system_one == nullptr || system_two == nullptr)
@@ -169,7 +169,7 @@ public:
 	Flow* flow_exists(const string&);
 	bool clear();
 
-	ModelHandle(const ModelHandle&)					= delete; /// No copy allowed.
+	ModelHandle(const ModelHandle&)				= delete; /// No copy allowed.
 	ModelHandle& operator=(const ModelHandle&)		= delete;
 
 	bool run(int);
