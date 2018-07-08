@@ -1,5 +1,5 @@
 /*
-* FELIPE CÉSAR LOPES MACHADO - 16.2.5890
+* FELIPE CÃ‰SAR LOPES MACHADO - 16.2.5890
 * UFOP - UNIVERSIDADE FEDERAL DE OURO PRETO
 * JUL/2018
 */
@@ -14,10 +14,10 @@ using namespace std;
 class System {
 
 public:
-	virtual string get_name()				= 0;
-	virtual void set_name(const string&)	= 0;
+	virtual string get_name()			= 0;
+	virtual void set_name(const string&)		= 0;
 	virtual void set_stock(double)			= 0;
-	virtual double get_stock()				= 0;
+	virtual double get_stock()			= 0;
 	virtual double get_last_stock()			= 0;
 	virtual bool set_last_stock(double)		= 0;
 
