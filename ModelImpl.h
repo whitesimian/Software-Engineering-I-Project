@@ -7,21 +7,21 @@
 
 using namespace std;
 
-class ModelImpl : public Model {
+class ModelImpl : public Body { /// Model Body
 
 private:
 	vector<Flow *> flowSet;
 	vector<System *> systemSet;
 	int time;
 
-	static Model* instance; // Singleton
-
-	ModelImpl(int);
-	~ModelImpl();
+	static ModelImpl* instance;
 
 public:
 
-	static Model* new_model(int);
+	ModelImpl(int); /// Not singleton, although the idea is to securely use ModelImpl::new_model().
+	~ModelImpl();
+
+	static ModelImpl* new_model(int);
 
 	vector<System * >::iterator systemBegin();
 	vector<System * >::iterator systemEnd();
@@ -40,7 +40,7 @@ public:
 	template<typename __FLOW_FUNCT_OBJ>
 	static Flow* add_flow(const string&, const string&, const string&);
 
-	static Model* get_instance();
+	static ModelImpl* get_instance();
 	bool erase_system(const string&);
 	bool erase_flow(const string&);
 	bool set_time(int);
@@ -49,7 +49,9 @@ public:
 	System* system_exists(const string&);
 	Flow* flow_exists(const string&);
 
-	void * operator new(size_t);
+	void * operator new(size_t);						  /// Returns the same unique object.
+	ModelImpl(const ModelImpl&)					= delete; /// No copy allowed.
+	ModelImpl& operator=(const ModelImpl&)		= delete;
 
 	bool run(int);
 
@@ -110,7 +112,7 @@ inline Flow * ModelImpl::add_flow(const string & s1, const string & s2, const st
 }
 
 template<typename __FLOW_FUNCT_OBJ>
-static Flow* Model::add_flow(System * s1, System * s2, const string& name) {
+inline static Flow* Model::add_flow(System * s1, System * s2, const string& name) {
 	return ModelImpl::add_flow<__FLOW_FUNCT_OBJ>(s1, s2, name);
 }
 
@@ -118,4 +120,64 @@ template<typename __FLOW_FUNCT_OBJ>
 inline Flow * Model::add_flow(const string & s1, const string & s2, const string & name)
 {
 	return ModelImpl::add_flow<__FLOW_FUNCT_OBJ>(s1, s2, name);
+}
+
+/// Model handle below
+
+/// Handle's pImpl_ will point to the same object regardless of new attemps of allocation of ModelHandle (singleton).
+/// The "new" operator is called on Handle class and, if the object already exists, refCount_ is set to zero.
+/// attach() is called afterwards on Handle class. Note that detach() could not be called, otherwise the unique object
+/// of ModelImpl would be destroyed and pImpl_->attach() would cause runtime error.
+
+class ModelHandle : public Model, public Handle<ModelImpl> { 
+
+private:
+	static Model * instance;
+
+	ModelHandle(int); /// Singleton
+
+public:
+	static Model* new_model(int time = 0);
+
+	vector<Flow *>::iterator flowEnd();
+	vector<Flow *>::iterator flowBegin();
+	vector<System *>::iterator systemEnd();
+	vector<System *>::iterator systemBegin();
+
+	size_t flow_amount();
+	size_t system_amount();
+	bool flow_resize_one_more();
+	bool system_resize_one_more();
+
+	static System* add_system(const std::string&, int);
+
+	template<typename __FLOW_FUNCT_OBJ>
+	static Flow* add_flow(System *, System *, const string&);
+
+	template<typename __FLOW_FUNCT_OBJ>
+	static Flow* add_flow(const string&, const string&, const string&);
+
+	static Model* get_instance();
+	bool erase_system(const string&);
+	bool erase_flow(const string&);
+	bool set_time(int);
+	int get_cur_time();
+	System* system_exists(const string&);
+	Flow* flow_exists(const string&);
+	bool clear();
+
+	ModelHandle(const ModelHandle&)					= delete; /// No copy allowed.
+	ModelHandle& operator=(const ModelHandle&)		= delete;
+
+	bool run(int);
+};
+
+template<typename __FLOW_FUNCT_OBJ>
+inline static Flow* ModelHandle::add_flow(System * s1, System * s2, const string& name) {
+	return ModelImpl::add_flow<__FLOW_FUNCT_OBJ>(s1, s2, name);
+}
+
+template<typename __FLOW_FUNCT_OBJ>
+inline static Flow* ModelHandle::add_flow(const string& n1, const string& n2, const string& n3) {
+	return ModelImpl::add_flow<__FLOW_FUNCT_OBJ>(n1, n2, n3);
 }

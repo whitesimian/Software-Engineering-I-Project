@@ -5,7 +5,8 @@
 #include <vector>
 #include <stdexcept>
 
-Model* ModelImpl::instance = nullptr; // Singleton
+ModelImpl* ModelImpl::instance = nullptr;
+Model* ModelHandle::instance = nullptr; /// Singleton
 
 ModelImpl::ModelImpl(int initial_time = 0) : time(initial_time)
 {
@@ -30,7 +31,7 @@ void * ModelImpl::operator new(size_t tam)
 	return instance;
 }
 
-Model * ModelImpl::new_model(int time = 0)
+ModelImpl * ModelImpl::new_model(int time = 0)
 {
 	if (instance == nullptr)
 		instance = new ModelImpl(time);
@@ -105,7 +106,7 @@ System* ModelImpl::add_system(const string& name, int stock)
 	return to_add;
 }
 
-Model * ModelImpl::get_instance()
+ModelImpl * ModelImpl::get_instance()
 {
 	return ModelImpl::instance;
 }
@@ -202,4 +203,105 @@ bool ModelImpl::run(int end_time)
 	}
 
 	return true;
+}
+
+ModelHandle::ModelHandle(int initial_time) {
+	this->pImpl_->set_time(initial_time);
+}
+
+Model * ModelHandle::new_model(int time)
+{
+	if (instance == nullptr)
+		instance = new ModelHandle(time); /// new pImp_->attach() is not called because ModelHandle is unique (singleton). refCount_ is either 0 or 1 for ModelImpl.
+	return instance;
+}
+
+vector<Flow*>::iterator ModelHandle::flowEnd()
+{
+	return this->pImpl_->flowEnd();
+}
+
+vector<Flow*>::iterator ModelHandle::flowBegin()
+{
+	return this->pImpl_->flowBegin();
+}
+
+vector<System*>::iterator ModelHandle::systemEnd()
+{
+	return this->pImpl_->systemEnd();
+}
+
+vector<System*>::iterator ModelHandle::systemBegin()
+{
+	return this->pImpl_->systemBegin();
+}
+
+size_t ModelHandle::flow_amount()
+{
+	return this->pImpl_->flow_amount();
+}
+
+size_t ModelHandle::system_amount()
+{
+	return this->pImpl_->system_amount();
+}
+
+bool ModelHandle::flow_resize_one_more()
+{
+	return this->pImpl_->flow_resize_one_more();
+}
+
+bool ModelHandle::system_resize_one_more()
+{
+	return this->pImpl_->system_resize_one_more();
+}
+
+System * ModelHandle::add_system(const std::string & name, int stock)
+{
+	return ModelImpl::add_system(name, stock);
+}
+
+Model * ModelHandle::get_instance()
+{
+	return instance;
+}
+
+bool ModelHandle::erase_system(const string & name)
+{
+	return this->pImpl_->erase_system(name);
+}
+
+bool ModelHandle::erase_flow(const string & name)
+{
+	return this->pImpl_->erase_flow(name);
+}
+
+bool ModelHandle::set_time(int time)
+{
+	return this->pImpl_->set_time(time);
+}
+
+int ModelHandle::get_cur_time()
+{
+	return this->pImpl_->get_cur_time();
+}
+
+System * ModelHandle::system_exists(const string & name)
+{
+	return this->pImpl_->system_exists(name);
+}
+
+Flow * ModelHandle::flow_exists(const string & name)
+{
+	return this->pImpl_->flow_exists(name);
+}
+
+bool ModelHandle::clear()
+{
+	return this->pImpl_->clear();
+}
+
+bool ModelHandle::run(int end)
+{
+	return this->pImpl_->run(end);
 }

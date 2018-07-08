@@ -4,7 +4,7 @@
 
 Model * Model::new_model(int time)
 {
-	return ModelImpl::new_model(time);
+	return ModelHandle::new_model(time);
 }
 
 System * Model::add_system(const string & name, int stock)
@@ -14,5 +14,5 @@ System * Model::add_system(const string & name, int stock)
 
 Model * Model::get_instance()
 {
-	return ModelImpl::get_instance();
+	return ModelHandle::get_instance();
 }
