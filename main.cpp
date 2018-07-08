@@ -5,6 +5,12 @@
 #include <cstdlib>
 #include "_model.h"
 
+/* 
+* FELIPE CÉSAR LOPES MACHADO - 16.2.5890
+* UFOP - UNIVERSIDADE FEDERAL DE OURO PRETO
+* JUL/2018
+*/
+
 using namespace std;
 
 class Exp : public FlowImpl {
