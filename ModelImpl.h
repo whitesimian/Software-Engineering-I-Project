@@ -124,10 +124,7 @@ inline Flow * Model::add_flow(const string & s1, const string & s2, const string
 
 /// Model handle below
 
-/// Handle's pImpl_ will point to the same object regardless of new attemps of allocation of ModelHandle (singleton).
-/// The "new" operator is called on Handle class and, if the object already exists, refCount_ is set to zero.
-/// attach() is called afterwards on Handle class. Note that detach() could not be called, otherwise the unique object
-/// of ModelImpl would be destroyed and pImpl_->attach() would cause runtime error.
+/// Handle's pImpl_ will point to the same object regardless of new attemps of allocation of ModelHandle.
 
 class ModelHandle : public Model, public Handle<ModelImpl> { 
 

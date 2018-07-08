@@ -131,9 +131,6 @@ int main() {
 			ModelHandle::add_flow<Exp>("pop1", "pop2", "exponencial");
 			ModelHandle::get_instance()->run(100);
 
-			//cout << Model::get_instance()->system_exists("pop1")->get_stock() << "\n";
-			//cout << Model::get_instance()->system_exists("pop2")->get_stock() << "\n";
-
 			assert(ModelHandle::get_instance()->system_exists("pop1")->get_stock() - 36.6032 < 1e-04);
 			assert(ModelHandle::get_instance()->system_exists("pop2")->get_stock() - 63.3968 < 1e-04);
 			cout << "Concluido.\n";
@@ -169,12 +166,6 @@ int main() {
 			ModelHandle::add_flow<Exp>("S3", "S4", "exponencial5");
 			ModelHandle::add_flow<Exp>("S4", "S1", "exponencial6");
 			ModelHandle::get_instance()->run(100);
-
-			//cout << Model::get_instance()->system_exists("S1")->get_stock() << "\n";
-			//cout << Model::get_instance()->system_exists("S2")->get_stock() << "\n";
-			//cout << Model::get_instance()->system_exists("S3")->get_stock() << "\n";
-			//cout << Model::get_instance()->system_exists("S4")->get_stock() << "\n";
-			//cout << Model::get_instance()->system_exists("S5")->get_stock() << "\n";
 
 			assert(ModelHandle::get_instance()->system_exists("S1")->get_stock() - 31.8513 < 1e-04);
 			assert(ModelHandle::get_instance()->system_exists("S2")->get_stock() - 18.4003 < 1e-04);
