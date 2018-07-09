@@ -14,12 +14,6 @@ FlowImpl::FlowImpl()
 
 FlowImpl::~FlowImpl()
 {
-	if (from == nullptr)
-		delete from;
-	if (to == nullptr)
-		delete to;
-	from = nullptr;
-	to = nullptr;
 }
 
 string FlowImpl::get_name()
