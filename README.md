@@ -1,5 +1,5 @@
 # Software Engineering I Course Project
-A project developed for "Software Engineering I" course.
+A project developed for "Software Engineering I" course, UFOP.
 
 Developed according to the following guideline:
 
