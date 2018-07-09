@@ -70,7 +70,7 @@ inline Flow* ModelImpl::add_flow(System* s1, System* s2, const std::string& name
 	try {
 		Model* ins = Model::get_instance();
 		ins->flow_resize_one_more();
-		*(--ins->flowEnd()) = to_add;
+		*(--ins->flowEnd()) = to_add; // Poderia ter sido feito com um método "add" que utilizasse simplesmente um "push_back_ no vetor.
 
 		if (Model::get_instance()->system_exists(s1->get_name()) == nullptr) { // If the system does not exist, add it.
 			ins->system_resize_one_more();

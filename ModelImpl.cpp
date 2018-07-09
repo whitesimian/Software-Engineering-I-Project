@@ -16,7 +16,7 @@ ModelImpl::~ModelImpl()
 {
 	for (Flow* elem : flowSet)
 		if (elem != nullptr)
-			delete elem; // NÃO há problema de leak caso os destrutores de System e Flow sejam VIRTUAIS, como é o caso.
+			delete elem;  // NÃO há problema de leak caso os destrutores de System e Flow sejam VIRTUAIS, como é o caso.
 	for (System* elem : systemSet)
 		if (elem != nullptr)
 			delete elem;
